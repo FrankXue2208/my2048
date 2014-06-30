@@ -4,6 +4,7 @@
  * Moved by Touch for mobiles
  */
 
+var isOnceMoved = false, startMoveTime, endMoveTime;
 var moveContainer = document.getElementById("grid-container")
 
 function touchStart(e) {
@@ -16,6 +17,9 @@ function touchStart(e) {
 
 function touchMove(e) {
     e.preventDefault();
+    if (isReplay)
+        return;
+
     endMoveTime = new Date();
     if ( !isOnceMoved &&  endMoveTime - startMoveTime < 200) {
         endx = e.changedTouches[0].pageX;
@@ -26,36 +30,16 @@ function touchMove(e) {
         if ( Math.abs(deltax) < 0.1 * documentWidth && Math.abs(deltay) < 0.1 * documentWidth)
             return;
 
-        isOnceMoved = true;
         if (Math.abs(deltax) >= Math.abs(deltay)){
-
-            if (deltax <= 0) {
-                //move left
-                if (moveLeft()) {
-                    setTimeout("generateOneNumber()", 110);
-                    setTimeout("isgameover()", 200);
-                }
-            } else {
-                //move right
-                if (moveRight()) {
-                    setTimeout("generateOneNumber()", 110);
-                    setTimeout("isgameover()", 200);
-                }
-            }
-        }else
-        if (deltay > 0 ){
-            //move downs
-            if(moveDown()){
-                setTimeout("generateOneNumber()", 110);
-                setTimeout("isgameover()", 200);
-            }
+            if (deltax <= 0) {if (moveLeft()) {isOnceMoved = true ; }}//move left
+             else {if (moveRight()) {isOnceMoved = true;}}//move right
+        }else{
+            if (deltay > 0 ){if(moveDown()){isOnceMoved = true;}}//move downs
+             else{ if(moveUp()){isOnceMoved = true; } }//move up
         }
-        else{
-            //move up
-            if(moveUp()){
-                setTimeout("generateOneNumber()", 110);
-                setTimeout("isgameover()", 200);
-            }
+        if (isOnceMoved){
+            setTimeout("generateOneNumber()", timeTimeout);
+            setTimeout("isgameover()", timeTimeout + 200);
         }
     }
 }

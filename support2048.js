@@ -41,13 +41,13 @@ function getNumberFontSize(number){
     switch( number.toString().length)
     {
         case 1:
-             return 1;
+             return 1; break;
         case 2:
-            return 0.9;
+            return 0.9; break;
         case 3:
-            return 0.75;
+            return 0.75; break;
         case 4:
-            return 0.62;
+            return 0.62; break;
         default:
             return 0.5;
     }
@@ -68,7 +68,6 @@ function canMoveLeft(board){
             if (board[i][j] != 0)
                 if(board[i][j-1] == 0 ||  board[i][j-1] == board[i][j])
                     return true;
-
     return false;
 }
 
@@ -78,7 +77,6 @@ function canMoveUp(board){
             if(board[i][j] != 0)
                 if (board[i-1][j] == 0 || board[i-1][j] == board[i][j])
                     return true;
-
     return false;
 }
 
@@ -138,4 +136,50 @@ function setCookie(c_name, value, expiredays){
     document.cookie = c_name + "=" + escape(value) +
         ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
 
+}
+
+
+// 存储格式  i*100 + j*10 + randNumber } direction (0:left 1:up 2:right 3:down)
+function updateArrayMoveStpesGenerate( i, j, randNumber){
+    //$("#txt-high-score").text( m++ );
+    arrayMoveStepsNumber.push( i * 100 + j * 10 + randNumber);
+
+    /*
+    if (isGameStartGenerateOneNumber) {
+        //arrayMoveSteps.push(i * 100 + j * 10 + randNumber + '|-1');
+        arrayMoveSteps[intSteps] = arrayMoveSteps[intSteps] + '-1';
+        isGameStartGenerateOneNumber = false;
+    }
+    */
+}
+
+function updateArrayMoveStpesDirection( direction){
+    if (isReplay)  return;
+
+    //$("#list").text( n++ );
+
+
+    var intDirection;
+    switch (direction)
+    {
+        case 'left': intDirection = '0'; break;
+        case 'up': intDirection =  '1'; break;
+        case 'right': intDirection =  '2'; break;
+        case 'down': intDirection =  '3'; break;
+        default : intDirection =  '-1';
+    }
+    arrayMoveStepsDirection.push(intDirection)
+}
+
+// save high score, if it's enough
+function saveHighScore(score, aryNumber, aryDirection){
+
+
+}
+
+function setConflictedFalse(){
+    for (var i = 0; i < 4; i++)
+        for (var j = 0; j < 4; j++) {
+            hasConflicted[i][j] = false;
+        }
 }
